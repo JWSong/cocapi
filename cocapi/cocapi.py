@@ -1,4 +1,4 @@
-import httpx
+import requests
 import json
 
 
@@ -8,8 +8,9 @@ class CocApi:
         self.token = token
         self.endpoint = 'https://api.clashofclans.com/v1'
         self.timeout = timeout
-        self.headers = {'authorization': 'Bearer %s' % token,
-                        'Accept': 'application/json'}
+        self.session = requests.Session()
+        self.session.headers = {'authorization': 'Bearer %s' % token,
+                                'Accept': 'application/json'}
 
     # Function to handle requests
     def api_response(self, uri, params):
@@ -17,8 +18,7 @@ class CocApi:
         if params:
             params = json.dumps(params)
         try:
-            response = httpx.get(
-                url, data=params, headers=self.headers, timeout=self.timeout)
+            response = requests.get(url, data=params, timeout=self.timeout)
             return response.json()
         except:
             return '404'
