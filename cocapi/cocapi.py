@@ -18,7 +18,7 @@ class CocApi:
         if params:
             params = json.dumps(params)
         try:
-            response = requests.get(url, data=params, timeout=self.timeout)
+            response = self.session.get(url, data=params, timeout=self.timeout)
             return response.json()
         except:
             return '404'
@@ -126,3 +126,6 @@ class CocApi:
     def labels_players(self, params=None):
         uri = '/labels/players/'
         return self.api_response(uri, params)
+
+    def __del__(self):
+        self.session.close()
